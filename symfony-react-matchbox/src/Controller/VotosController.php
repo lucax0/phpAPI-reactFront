@@ -18,7 +18,7 @@ class VotosController extends AbstractController
         ]);
     }
 
-        /**
+    /**
      * @Route("/api/votos", name="votos")
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
