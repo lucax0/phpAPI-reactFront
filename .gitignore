@@ -3,6 +3,13 @@
 /app/logs/*
 !app/cache/.gitkeep
 !app/logs/.gitkeep
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
 
 # Email spool folder
 /app/spool/*
@@ -50,3 +57,13 @@
 
 # Embedded web-server pid file
 /.web-server-pid
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Dependency directories
+node_modules/
+jspm_packages/
