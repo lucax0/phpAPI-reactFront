@@ -8,8 +8,8 @@ class Home extends Component {
     
     render() {
         return (
-           <div>
-               <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div>
+               {/* <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
                    <Link className={"navbar-brand"} to={"/"}> Matchbox Test </Link>
                    <div className="collapse navbar-collapse" id="navbarText">
                        <ul className="navbar-nav mr-auto">    
@@ -18,7 +18,7 @@ class Home extends Component {
                            </li>
                        </ul>
                    </div>
-               </nav>
+               </nav> */}
                <Switch>
                    <Redirect exact from="/" to="/votos" />
                    <Route path="/votos" component={Votos} />

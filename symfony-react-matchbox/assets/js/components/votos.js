@@ -47,9 +47,9 @@ class Votos extends Component {
                                                         <h4>{votos.name}</h4>
                                                         <p>{votos.description}</p>
                                                     </div>
-                                                    <div className="media-right align-self-center">
+                                                    {/* <div className="media-right align-self-center">
                                                         <a href="#" className="btn btn-default">Contact Now</a>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                             </li>
                                         </ul>
