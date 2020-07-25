@@ -19,12 +19,12 @@ class VotosController extends AbstractController
     }
 
     /**
-     * @Route("/api/votos", name="votos")
+     * @Route("/api/listvotos", name="listvotos")
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getUsers()
+    public function getListvotos()
     {
-        $users = [
+        $votos = [
             [
                 "__id" => "f8c3500f39017602234a031caa64a8b4",
                 "name" => "Caio Diego Henrique Moreira",
@@ -45,7 +45,7 @@ class VotosController extends AbstractController
                 "__id" => "70580002438b08c63286d08b7c43fb4c",
                 "name" => "Alessandra Teresinha Fernandes",
                 "description" => "Recruitment Marketing",
-                "picture" => "https://storage-matchboxbrasil.sfo2.digitaloceanspaces.com/diversos/frontend-test/70580002438b08c63286d08b7c43fb4c.png",
+                "__id" => "https://storage-matchboxbrasil.sfo2.digitaloceanspaces.com/diversos/frontend-test/70580002438b08c63286d08b7c43fb4c.png",
                 "positive" => 59089056,
                 "negative" => 14772265
             ],
@@ -72,7 +72,7 @@ class VotosController extends AbstractController
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
-        $response->setContent(json_encode($users));
+        $response->setContent(json_encode($votos));
         
         return $response;
     }
