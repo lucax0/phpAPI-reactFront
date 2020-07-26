@@ -2,7 +2,35 @@
     
 import React, {Component} from 'react';
 import axios from 'axios';
+import swal from 'sweetalert'
     
+function  postComputaVotos(data){
+    swal("Chegou a hora de votar!", {
+        buttons: {
+            cancel : "Fechar",
+            naoGostei: {
+                text: "Não gosto :(",
+                value: "naoGostei"
+            },
+            gostei: {
+                text: "Gostei!! :)",
+                value : "gostei"
+            }
+        }
+    }).then((value) => {
+        switch (value) {
+ 
+            case "gostei":
+              swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+              Votos.render;
+              break;
+         
+            case "naoGostei":
+              swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+              break;
+    }});    
+}
+
 class Votos extends Component {
     constructor() {
         super();
@@ -18,6 +46,7 @@ class Votos extends Component {
            this.setState({ votos: votos.data, loading: false})
        })
     }
+
     
     render() {
         const loading = this.state.loading;
@@ -47,9 +76,9 @@ class Votos extends Component {
                                                         <h4>{votos.name}</h4>
                                                         <p>{votos.description}</p>
                                                     </div>
-                                                    {/* <div className="media-right align-self-center">
-                                                        <a href="#" className="btn btn-default">Contact Now</a>
-                                                    </div> */}
+                                                    <div className="media-right align-self-center">
+                                                        <button onClick={() => postComputaVotos({votos})} className="btn btn-default">Votar</button>
+                                                    </div>
                                                 </div>
                                             </li>
                                         </ul>
