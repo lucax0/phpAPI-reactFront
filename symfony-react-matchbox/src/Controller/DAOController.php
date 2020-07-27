@@ -8,6 +8,8 @@ use App\Entity\Votos;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
+session_start();
+
 class DAOController extends AbstractController
 {
     /**
@@ -106,14 +108,14 @@ class DAOController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Votos::class);
 
         $listVotos =  $repository->findAll();
-
+        //SETANDO INFO NO RESPONSE
         $response = new Response();
 
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         foreach ($listVotos as $key => $value) {
-            array_push($arr, $value->getData());
+            array_push($arr, $value->getData());//CONVERTENDO TDS OS OBJETOS DE ENTY PARA JSON
         }
 
         $response->setContent(json_encode($arr));
@@ -124,24 +126,31 @@ class DAOController extends AbstractController
      * @Route("/api/edit/{id}/{nota}")
      */
     public function update($id, $nota)
-    {        
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $usuario = $entityManager->getRepository(Votos::class)->find($id);
+        $response = new Response();
 
         if (!$usuario) {
             throw $this->createNotFoundException(
                 'Id invalido ' . $id
             );
         }
+        if (!isset($_SESSION["votos"])) {
+            if ($nota == 1) {
+                $usuario->setPositive($usuario->getPositive() + 1);
+            } else {
+                $usuario->setNegative($usuario->getNegative() + 1);
+            }
 
-        if ($nota == "positive") {
-            $usuario->setPositive($usuario->getPositive() + 1);
+            $_SESSION["votos"] = true;
+
+            $entityManager->flush();
+            $response->setStatusCode(200);
+            return $response;
         } else {
-            $usuario->setNegative($usuario->getNegative() + 1);
+            $response->setStatusCode(204);
+            return $response;
         }
-        
-        $entityManager->flush();
-
-        return $this->redirectToRoute('home');
     }
 }

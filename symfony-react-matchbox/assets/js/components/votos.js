@@ -1,86 +1,79 @@
 // ./assets/js/components/votos.js
-    
-import React, {Component} from 'react';
+
+import React, { Component } from 'react';
 import axios from 'axios';
-import swal from 'sweetalert'
-    
-// function  postComputaVotos(data){
-//     swal("Chegou a hora de votar!", {
-//         buttons: {
-//             cancel : "Fechar",
-//             naoGostei: {
-//                 text: "Não gosto :(",
-//                 value: "naoGostei"
-//             },
-//             gostei: {
-//                 text: "Gostei!! :)",
-//                 value : "gostei"
-//             }
-//         }
-//     }).then((value) => {
-//         switch (value) {
- 
-//             case "gostei":
-//               swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-//               break;
-         
-//             case "naoGostei":
-//               swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-//               break;
-//     }});   
+import swal from 'sweetalert';
 
 
 class Votos extends Component {
     constructor() {
         super();
-        this.state = { votos: [], loading: true};
+        this.state = { votos: [], loading: true };
     }
-    
+
     componentDidMount() {
         this.getListvotos();
     }
-    
+
     getListvotos() {
-       axios.get(`https://localhost:8000/api/listvotos`).then(votos => {
-           this.setState({ votos: votos.data, loading: false})
-       })
+        axios.get(`https://localhost:8000/api/listvotos`).then(votos => {
+            this.setState({ votos: votos.data, loading: false })
+        })
     }
 
-    postComputaVotos(data) {
-        swal("Chegou a hora de votar!", {
+    alertComputaVotos(data) {
+        swal({       
+
+            title: "Chegou a hora de votar!",
+            text: `${data.votos.name} tem o Score de:\n Gostei:${(data.votos.positive * 100/(data.votos.positive + data.votos.negative)).toFixed(2)}% Nao Gostei:${(data.votos.negative * 100/(data.votos.positive + data.votos.negative)).toFixed(2)}%`,
             buttons: {
-                cancel : "Fechar",
+                cancel: "Fechar",
                 naoGostei: {
                     text: "Não gosto :(",
                     value: "naoGostei"
                 },
                 gostei: {
                     text: "Gostei!! :)",
-                    value : "gostei"
+                    value: "gostei"
                 }
             }
+
         }).then((value) => {
+
             switch (value) {
-     
+
                 case "gostei":
-                  swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-                  axios.post(`https://localhost:8000/api/edit/`+ data.votos.__id + `/positive`)
-                  break;
-             
+                    this.forceUpdate();                    
+                    result = new Promise((resolve, reject) => {
+                        resolve(axios.post(`https://localhost:8000/api/edit/${data.votos.__id}/1}`))
+                    }).then(resp => {
+                        if (resp.status == 200) {
+                            swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+                        } else { swal("OPS!", "Seu voto ja foi enviado!", "info"); } 
+                    });                                     
+                    break;
+
                 case "naoGostei":
-                  swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-                  axios.post(`https://localhost:8000/api/edit/`+ data.votos.__id + `/negative`)
-                  break;
-        }});  
+                    result = new Promise((resolve, reject) => {
+                        resolve(axios.post(`https://localhost:8000/api/edit/${data.votos.__id}/0}`))
+                    }).then(resp => {
+                        if (resp.status == 200) { //NA API O PHP CONSULTA A SESSION SE TIVER UMA SESSION SIGNIFICA QUE JA FOI VOTADO E RETORNA != 200
+                            swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+                        } else { swal("OPS!", "Seu voto ja foi enviado!", "info"); }
+                    });
+                    break;
+            }
+            this.forceUpdate();
+        });
     }
-    
+
     render() {
         const loading = this.state.loading;
-        return(
+        return (
             <div>
                 <section className="row-section">
                     <div className="container">
-                        <div className="row">
+                        <div className={'row'}>
                             <h2 className="text-center"><span>Ranking</span></h2>
                         </div>
                         {loading ? (
@@ -88,30 +81,30 @@ class Votos extends Component {
                                 <span className="fa fa-spin fa-spinner fa-4x"></span>
                             </div>
                         ) : (
-                            <div className={'row'}>
-                                { this.state.votos.map(votos =>
-                                    <div className="col-md-10 offset-md-1 row-block" key={votos.__id}>
-                                        <ul __id="sortable">
-                                            <li>
-                                                <div className="media">
-                                                    <div className="media-left align-self-center">
-                                                        <img className="rounded-circle"
-                                                             src={votos.picture}/>
+                                <div className={'row'}>
+                                    {this.state.votos.map(votos =>
+                                        <div className="col-md-10 offset-md-1 row-block" key={votos.__id}>
+                                            <ul __id="sortable">
+                                                <li>
+                                                    <div className="media">                                                    
+                                                        <div className="media-left align-self-center">
+                                                            <img className="rounded-circle"
+                                                                src={votos.picture} />
+                                                        </div>
+                                                        <div className="media-body">
+                                                            <h4>{votos.name}</h4>
+                                                            <p>{votos.description}</p>
+                                                        </div>
+                                                        <div className="media-right align-self-center">
+                                                            <button onClick={() => this.alertComputaVotos({ votos })} className="btn btn-default">Votar</button>
+                                                        </div>
                                                     </div>
-                                                    <div className="media-body">
-                                                        <h4>{votos.name}</h4>
-                                                        <p>{votos.description}</p>
-                                                    </div>
-                                                    <div className="media-right align-self-center">
-                                                        <button onClick={() => this.postComputaVotos({votos})} className="btn btn-default">Votar</button>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                     </div>
                 </section>
             </div>
