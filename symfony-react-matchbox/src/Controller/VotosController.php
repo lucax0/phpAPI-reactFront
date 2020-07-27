@@ -18,6 +18,7 @@ class VotosController extends AbstractController
             'controller_name' => 'VotosController',
         ]);
     }
+    //DEIXA TUDO NA DAO? ESSA CONTROLER NAO VAI FAZER ND??
 
     // /**
     //  * @Route("/api/listvotos", name="listvotos")

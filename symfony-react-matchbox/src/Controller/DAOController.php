@@ -97,9 +97,10 @@ class DAOController extends AbstractController
     }
 
     /**
-    * @Route("/api/listvotos", name="users_show")
-    */
-    public function getAll(){
+     * @Route("/api/listvotos", name="users_show")
+     */
+    public function getAll()
+    {
         $arr = [];
 
         $repository = $this->getDoctrine()->getRepository(Votos::class);
@@ -112,11 +113,37 @@ class DAOController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         foreach ($listVotos as $key => $value) {
-            # code...
-            array_push($arr,$value ->getData());
+            array_push($arr, $value->getData());
         }
 
-        $response->setContent(json_encode($arr));      
+        $response->setContent(json_encode($arr));
         return $response;
+    }
+
+    /**
+     * @Route("/api/edit/{id}/{nota}")
+     */
+    public function update($id, $nota)
+    {        
+        $entityManager = $this->getDoctrine()->getManager();
+        $usuario = $entityManager->getRepository(Votos::class)->find($id);
+
+        if (!$usuario) {
+            throw $this->createNotFoundException(
+                'Id invalido ' . $id
+            );
+        }
+
+        if ($nota == "positiva") {
+            $usuario->setPositive($usuario->getPositive() + 1);
+        } else {
+            $usuario->setNegative($usuario->getNegative() + 1);
+        }
+        
+        $entityManager->flush();
+
+        return $this->redirectToRoute('product_show', [
+            'id' => $usuario->getId()
+        ]);
     }
 }
