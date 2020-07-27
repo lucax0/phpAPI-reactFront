@@ -4,32 +4,31 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import swal from 'sweetalert'
     
-function  postComputaVotos(data){
-    swal("Chegou a hora de votar!", {
-        buttons: {
-            cancel : "Fechar",
-            naoGostei: {
-                text: "Não gosto :(",
-                value: "naoGostei"
-            },
-            gostei: {
-                text: "Gostei!! :)",
-                value : "gostei"
-            }
-        }
-    }).then((value) => {
-        switch (value) {
+// function  postComputaVotos(data){
+//     swal("Chegou a hora de votar!", {
+//         buttons: {
+//             cancel : "Fechar",
+//             naoGostei: {
+//                 text: "Não gosto :(",
+//                 value: "naoGostei"
+//             },
+//             gostei: {
+//                 text: "Gostei!! :)",
+//                 value : "gostei"
+//             }
+//         }
+//     }).then((value) => {
+//         switch (value) {
  
-            case "gostei":
-              swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-              Votos.render;
-              break;
+//             case "gostei":
+//               swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+//               break;
          
-            case "naoGostei":
-              swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
-              break;
-    }});    
-}
+//             case "naoGostei":
+//               swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+//               break;
+//     }});   
+
 
 class Votos extends Component {
     constructor() {
@@ -47,6 +46,33 @@ class Votos extends Component {
        })
     }
 
+    postComputaVotos(data) {
+        swal("Chegou a hora de votar!", {
+            buttons: {
+                cancel : "Fechar",
+                naoGostei: {
+                    text: "Não gosto :(",
+                    value: "naoGostei"
+                },
+                gostei: {
+                    text: "Gostei!! :)",
+                    value : "gostei"
+                }
+            }
+        }).then((value) => {
+            switch (value) {
+     
+                case "gostei":
+                  swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+                  axios.post(`https://localhost:8000/api/edit/`+ data.votos.__id + `/positive`)
+                  break;
+             
+                case "naoGostei":
+                  swal("Pronto!", "Seu voto foi enviado com sucesso", "success");
+                  axios.post(`https://localhost:8000/api/edit/`+ data.votos.__id + `/negative`)
+                  break;
+        }});  
+    }
     
     render() {
         const loading = this.state.loading;
@@ -77,7 +103,7 @@ class Votos extends Component {
                                                         <p>{votos.description}</p>
                                                     </div>
                                                     <div className="media-right align-self-center">
-                                                        <button onClick={() => postComputaVotos({votos})} className="btn btn-default">Votar</button>
+                                                        <button onClick={() => this.postComputaVotos({votos})} className="btn btn-default">Votar</button>
                                                     </div>
                                                 </div>
                                             </li>

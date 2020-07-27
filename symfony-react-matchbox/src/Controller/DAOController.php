@@ -134,7 +134,7 @@ class DAOController extends AbstractController
             );
         }
 
-        if ($nota == "positiva") {
+        if ($nota == "positive") {
             $usuario->setPositive($usuario->getPositive() + 1);
         } else {
             $usuario->setNegative($usuario->getNegative() + 1);
@@ -142,8 +142,6 @@ class DAOController extends AbstractController
         
         $entityManager->flush();
 
-        return $this->redirectToRoute('product_show', [
-            'id' => $usuario->getId()
-        ]);
+        return $this->redirectToRoute('home');
     }
 }
