@@ -46,6 +46,18 @@ class Votos
      * @ORM\Column(type="integer", nullable=true)
      */
     private $negative;
+    //  Retornando o objeto inteiro
+    public function getData() 
+    {
+        return [
+            "__id" => $this -> getId(),
+            "name" => $this -> getName(),
+            "description" => $this -> getDescription(),
+            "picture" => $this -> getPicture(),
+            "positive" => $this -> getPositive(),
+            "negative" => $this -> getNegative()
+        ];
+    }
 
     public function getId(): ?int
     {

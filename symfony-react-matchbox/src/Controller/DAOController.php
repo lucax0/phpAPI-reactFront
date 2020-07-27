@@ -90,13 +90,33 @@ class DAOController extends AbstractController
 
             $response->headers->set('Content-Type', 'application/json');
             $response->headers->set('Access-Control-Allow-Origin', '*');
-            $response->setContent(json_encode([["description" => 'ERRO AO ACESSA DB']]));
+            $response->setContent(json_encode([["description" => 'ERRO AO ACESSAR DB' + $th]]));
 
             return $response;
         }
     }
 
-    public function computVotos(){
+    /**
+    * @Route("/api/listvotos", name="users_show")
+    */
+    public function getAll(){
+        $arr = [];
 
+        $repository = $this->getDoctrine()->getRepository(Votos::class);
+
+        $listVotos =  $repository->findAll();
+
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        foreach ($listVotos as $key => $value) {
+            # code...
+            array_push($arr,$value ->getData());
+        }
+
+        $response->setContent(json_encode($arr));      
+        return $response;
     }
 }

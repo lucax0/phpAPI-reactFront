@@ -19,9 +19,16 @@ class VotosRepository extends ServiceEntityRepository
         parent::__construct($registry, Votos::class);
     }
 
-    // /**
-    //  * @return Votos[] Returns an array of Votos objects
-    //  */
+    public function getAllArray() {
+        $qb = $this->createQueryBuilder('u');    
+    
+    
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * @return Votos[] Returns an array of Votos objects
+     */
     /*
     public function findByExampleField($value)
     {
@@ -47,4 +54,5 @@ class VotosRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

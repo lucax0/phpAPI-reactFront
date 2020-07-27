@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Controller\DAOController;
 
 class VotosController extends AbstractController
 {
@@ -18,20 +19,21 @@ class VotosController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/api/listvotos", name="listvotos")
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getListvotos()
-    {
-    
-        $response = new Response();
-
-        $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        // $response->setContent(json_encode($votos));
+    // /**
+    //  * @Route("/api/listvotos", name="listvotos")
+    //  * @return \Symfony\Component\HttpFoundation\JsonResponse
+    //  */
+    // public function getListvotos()
+    // {
+    //     $listVotos = DAOController::getAll();
         
-        return $response;
-    }
+    //     $response = new Response();
+
+    //     $response->headers->set('Content-Type', 'application/json');
+    //     $response->headers->set('Access-Control-Allow-Origin', '*');
+
+    //     $response->setContent(json_encode($listVotos));
+        
+    //     return $response;
+    // }
 }
