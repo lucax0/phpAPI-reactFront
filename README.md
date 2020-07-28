@@ -13,7 +13,11 @@ To run project:
 Running project: 
 
 -> Into the main page it's needed two powershell on to run the php symphony project the other to run ReactJS.
+
 -> First Console : `symfony serve`
+
 -> Second Console: `yarn encore dev --watch`
+
 -> access the localhost or 127.0.0.1 :8000 and the main page should be running fine
+
 -> Extra step needed call a POST to the following end point so we can seed the dataBase ( Step will be changed in the future) 127.0.0.1:8000/api/dao
