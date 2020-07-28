@@ -60,7 +60,7 @@ class DAOController extends AbstractController
                 "negative" => 9446548
             ]
         ];
-        // COLOCAR EM JSON EXTERNO PARA DEIXAR O CODIGO MAIS ESCALAVEL!!! ---> MODELO SOMENTE PARA TESTES         
+        // COLOCAR EM JSON EXTERNO PARA DEIXAR O CODIGO MAIS ESCALAVEL!!! ---> MODELO SOMENTE PARA TESTES 
         try { // Salvando tds os objetos ja pre definidos
             foreach ($seedData as $key => $value) {
 
@@ -117,6 +117,10 @@ class DAOController extends AbstractController
         foreach ($listVotos as $key => $value) {
             array_push($arr, $value->getData());//CONVERTENDO TDS OS OBJETOS DE ENTY PARA JSON
         }
+        //  SORT DA LISTA COM BASE NA % DE GOSTEI
+        usort($arr, function ($a, $b) {
+            return $a['positive'] * 100/($a['positive'] + $a['negative']) < $b['positive'] * 100/($b['positive'] + $b['negative']);
+        });    
 
         $response->setContent(json_encode($arr));
         return $response;

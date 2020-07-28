@@ -43,7 +43,7 @@ class Votos extends Component {
             switch (value) {
 
                 case "gostei":
-                    this.forceUpdate();                    
+                    this.forceUpdate();                  
                     result = new Promise((resolve, reject) => {
                         resolve(axios.post(`https://localhost:8000/api/edit/${data.votos.__id}/1}`))
                     }).then(resp => {
@@ -62,8 +62,7 @@ class Votos extends Component {
                         } else { swal("OPS!", "Seu voto ja foi enviado!", "info"); }
                     });
                     break;
-            }
-            this.forceUpdate();
+            }            
         });
     }
 
@@ -84,7 +83,7 @@ class Votos extends Component {
                                 <div className={'row'}>
                                     {this.state.votos.map(votos =>
                                         <div className="col-md-10 offset-md-1 row-block" key={votos.__id}>
-                                            <ul __id="sortable">
+                                            <ul id="sortable">
                                                 <li>
                                                     <div className="media">                                                    
                                                         <div className="media-left align-self-center">
