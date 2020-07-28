@@ -29,11 +29,11 @@ class Votos extends Component {
             buttons: {
                 cancel: "Fechar",
                 naoGostei: {
-                    text: "Não gosto :(",
+                    text: "Não gostei </3",
                     value: "naoGostei"
                 },
                 gostei: {
-                    text: "Gostei!! :)",
+                    text: "Gostei!! <3",
                     value: "gostei"
                 }
             }
